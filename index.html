@@ -32,7 +32,7 @@ body{
 .header{
     font-size:20px;
     font-weight:600;
-    margin-bottom:10px;
+    margin-bottom:5px;
 }
 
 .sub{
@@ -46,12 +46,11 @@ body{
     border:1px solid #2a2f3a;
     border-radius:10px;
     padding:15px;
-    min-height:120px;
 }
 
 textarea{
     width:100%;
-    height:80px;
+    height:90px;
     background:transparent;
     border:none;
     color:white;
@@ -67,30 +66,8 @@ button{
     border-radius:8px;
     cursor:pointer;
     font-weight:600;
-}
-
-.ask{
     background:#3b82f6;
     color:white;
-}
-
-.paywall{
-    margin-top:20px;
-    background:#1f2937;
-    padding:15px;
-    border-radius:10px;
-    border:1px dashed #4b5563;
-    text-align:center;
-}
-
-.paybtn{
-    background:#22c55e;
-    color:black;
-    margin-top:10px;
-}
-
-.hidden{
-    display:none;
 }
 
 .response{
@@ -118,63 +95,50 @@ button{
 <div class="container">
 
 <div class="header">💼 Consultation by John</div>
-<div class="sub">Jack of All Trades • AI-style advisory interface (demo)</div>
+<div class="sub">Jack of All Trades • Strategic Advisory System</div>
 
 <div class="box">
-<textarea id="input" placeholder="Ask anything... business, life, ideas, coding, anything"></textarea>
-<button class="ask" onclick="ask()">Ask John</button>
+<textarea id="input" placeholder="Ask anything..."></textarea>
+<button onclick="ask()">Ask John</button>
 </div>
 
-<div id="paywall" class="paywall">
-💰 Unlock Consultation Access<br><br>
-Full responses require a one-time fee of<br>
-<b>500 AED</b><br>
-
-<button class="paybtn" onclick="unlock()">Pay 500 AED (Demo)</button>
-</div>
-
-<div id="response" class="response hidden"></div>
+<div id="response" class="response"></div>
 
 </div>
 
 <script>
 
-let unlocked = false;
-
-function unlock(){
-    unlocked = true;
-    document.getElementById("paywall").style.display="none";
-}
-
 function ask(){
 
-    const input = document.getElementById("input").value;
+    const input = document.getElementById("input").value.trim();
     const response = document.getElementById("response");
 
-    response.classList.remove("hidden");
     response.classList.add("typing");
+    response.innerText = "";
 
-    if(!unlocked){
-        typeText(response, "Access locked 🔒\nPlease unlock consultation for 500 AED (demo mode).");
-        return;
-    }
+    // always show this first (your rule)
+    const gateMessage = "500 AED first.\n\n";
 
     const answers = [
-        "As John, Jack of All Trades, my advice is:\nBreak the problem into small systems and solve step by step.",
-        "Interesting question.\nIf I were consulting this, I’d focus on speed of execution over perfection.",
-        "Here’s the truth:\nMost problems are simpler than they feel. Strip away noise.",
-        "Strategic view:\nYou’re either optimizing time, money, or attention. Identify which one.",
-        "Recommendation:\nAct first, refine later. Momentum beats planning."
+        "From a strategic perspective: simplify the problem into 2–3 core variables.",
+        "The fastest path is usually not the perfect one, but the executable one.",
+        "Focus on leverage: time, attention, or money — pick one to optimize.",
+        "Most situations improve when you remove unnecessary complexity.",
+        "Action creates clarity. Thinking alone does not."
     ];
 
-    typeText(response, answers[Math.floor(Math.random()*answers.length)]);
+    const finalAnswer = answers[Math.floor(Math.random()*answers.length)];
+
+    const fullText = gateMessage + finalAnswer;
+
+    typeText(response, fullText);
 }
 
 function typeText(el, text){
-    el.innerText = "";
     let i = 0;
+    el.innerText = "";
 
-    let interval = setInterval(()=>{
+    const interval = setInterval(()=>{
         el.innerText += text[i];
         i++;
         if(i >= text.length){
